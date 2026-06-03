@@ -1,0 +1,52 @@
+name: Create Release on Tag
+
+# Tworzy wydanie (Release) po wypchnięciu tagu zaczynającego się od "v",
+# np. v1.0.0. Plik instalatora .exe dołączasz do Release (patrz README):
+#  - albo ręcznie przez stronę GitHub (przeciągnij .exe do wydania),
+#  - albo poleceniem:  gh release upload v1.0.0 "Symulator Podatkow CIT i VAT Setup 1.0.0.exe"
+#
+# UWAGA: instalator (~98 MB) NIE jest trzymany w repozytorium — to za duży
+# artefakt buildu. Trafia wyłącznie jako asset Release (limit assetu: 2 GB).
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Symulator Podatków CIT i VAT ${{ github.ref_name }}
+          body: |
+            ## Symulator Podatków CIT i VAT ${{ github.ref_name }}
+
+            Desktopowy symulator CIT i VAT z doradcą AI dla biur architektonicznych
+            (PKD 71.11.Z). Działa lokalnie na Windows, dane zostają na komputerze.
+
+            ### Instalacja
+            Pobierz `Symulator Podatkow CIT i VAT Setup 1.0.0.exe` i uruchom.
+            Instalator działa **per-użytkownik — bez uprawnień administratora**.
+            Jeśli pojawi się SmartScreen „Nieznany wydawca” → **Więcej informacji → Uruchom mimo to**
+            (plik nie jest podpisany certyfikatem — to normalne dla darmowego oprogramowania).
+
+            ### ⚠️ Zastrzeżenie podatkowe
+            Analizy i odpowiedzi doradcy AI mają charakter pomocniczy i **nie stanowią
+            porady podatkowej, prawnej ani księgowej**. Nie zastępują doradcy podatkowego
+            ani biura rachunkowego — przed decyzją podatkową zweryfikuj je u specjalisty.
+          # Jeśli wgrywasz .exe ręcznie/przez gh, zostaw to puste.
+          # Jeśli kiedyś dołączysz .exe do repo, odkomentuj poniższe:
+          # files: "Symulator Podatkow CIT i VAT Setup 1.0.0.exe"
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

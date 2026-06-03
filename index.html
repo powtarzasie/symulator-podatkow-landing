@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Symulator CIT i VAT dla architektów — importuj dane, licz automatycznie</title>
+  <meta name="description" content="Desktopowy symulator CIT i VAT dla biur architektonicznych (PKD 71.11.Z). Importujesz faktury lub wpisujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, za darmo." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pl_PL" />
+  <meta property="og:url" content="https://powtarzasie.github.io/symulator-podatkow-landing/" />
+  <meta property="og:title" content="Symulator CIT i VAT dla architektów — desktop" />
+  <meta property="og:description" content="Importujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, prywatnie, za darmo." />
+  <meta property="og:image" content="https://powtarzasie.github.io/symulator-podatkow-landing/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Symulator CIT i VAT dla architektów — desktop" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Symulator CIT i VAT dla architektów — desktop" />
+  <meta name="twitter:description" content="Importujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, za darmo." />
+  <meta name="twitter:image" content="https://powtarzasie.github.io/symulator-podatkow-landing/og-image.jpg" />
+
+  <style>
+    :root{
+      --bg:#0a1124; --bg2:#0e1834; --panel:#121f3f; --panel2:#16264d; --ink:#eaf0ff; --muted:#9fb0d6;
+      --line:rgba(255,255,255,.08); --green:#28d07f; --green-d:#16a45f; --cyan:#3fd0e6;
+      --violet:#7c6bff; --violet2:#5b48e0; --amber:#f4c34a; --red:#ff6b6b; --shadow:0 24px 60px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);
+      background:radial-gradient(1200px 700px at 80% -10%,#1b2a63 0%,transparent 60%),
+        radial-gradient(900px 600px at -10% 20%,#10224a 0%,transparent 55%),
+        linear-gradient(180deg,var(--bg),var(--bg2));min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+    a{color:inherit}
+    .mono{font-family:'Consolas','SF Mono',ui-monospace,monospace}
+
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+    .logo{display:flex;align-items:center;gap:11px;font-weight:800}
+    .logo .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:grid;place-items:center;color:#fff;font-weight:900}
+    .badge-free{font-size:13px;color:var(--green);border:1px solid rgba(40,208,127,.35);padding:6px 12px;border-radius:999px;background:rgba(40,208,127,.08)}
+
+    .hero{display:grid;grid-template-columns:1fr 1.05fr;gap:42px;align-items:center;padding:30px 0 56px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border:1px solid var(--line);padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.03);margin-bottom:18px}
+    h1{font-size:clamp(29px,4.2vw,50px);line-height:1.08;letter-spacing:-.5px;font-weight:800}
+    h1 span{display:block;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .subhead{color:var(--muted);font-size:clamp(15.5px,1.5vw,18px);margin-top:18px;max-width:540px}
+    .subhead b{color:var(--ink)}
+    .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+    .chip{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;border:1px solid var(--line);padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.04)}
+    .chip i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+    .cta{margin-top:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+    .btn{cursor:pointer;border:none;font-family:inherit;display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--green),var(--green-d));color:#03130a;font-weight:800;padding:17px 30px;border-radius:14px;font-size:18px;box-shadow:0 14px 34px rgba(40,208,127,.32);transition:transform .15s,box-shadow .15s;text-decoration:none}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(40,208,127,.42)}
+    .btn svg{width:24px;height:24px;stroke:#03130a}
+    .btn small{display:block;font-weight:600;font-size:12.5px;opacity:.8}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
+    .btn-ghost{cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:700;font-size:15px;color:var(--cyan);border:1px solid rgba(63,208,230,.4);background:rgba(63,208,230,.07);padding:0 22px;border-radius:14px;transition:background .15s,transform .15s}
+    .btn-ghost:hover{background:rgba(63,208,230,.14);transform:translateY(-2px)}
+    .btn-ghost svg{width:18px;height:18px;stroke:var(--cyan)}
+    .dl-count{font-size:13px;color:var(--muted)}
+
+    /* ---- APP MOCKUP (right) ---- */
+    .app{background:linear-gradient(180deg,#0c1733,#0a1430);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .app-top{display:flex;align-items:center;gap:8px;padding:11px 15px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.25)}
+    .app-top i{width:11px;height:11px;border-radius:50%;background:#33405f}
+    .app-top .t{margin-left:8px;font-size:12.5px;color:var(--muted)}
+    .app-body{padding:15px}
+    .kpis{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .kpi{border:1px solid var(--line);border-radius:12px;padding:13px;background:rgba(255,255,255,.02)}
+    .kpi.v{background:linear-gradient(140deg,var(--violet2),#3a2db0);border-color:transparent}
+    .kpi .lab{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+    .kpi.v .lab{color:#d7d2ff}
+    .kpi .val{font-size:20px;font-weight:800;margin-top:7px}
+    .kpi .sub{font-size:11px;color:var(--muted);margin-top:4px}
+    .kpi.v .sub{color:#cfc8ff}
+    .kpi .tag{float:right;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(40,208,127,.18);color:var(--green)}
+    .kpi .val.red{color:var(--red)}
+    .bar{height:5px;border-radius:5px;background:rgba(255,255,255,.12);margin-top:9px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--cyan))}
+
+    /* AI scenario card inside app */
+    .scenario{margin-top:12px;border:1px solid var(--line);border-radius:13px;padding:14px;background:linear-gradient(160deg,#0a1026,#0c1430)}
+    .scenario .pill{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.4px;color:#cfc8ff;background:rgba(124,107,255,.18);border:1px solid rgba(124,107,255,.35);padding:4px 10px;border-radius:999px}
+    .scenario h4{font-size:15px;font-weight:800;margin-top:10px}
+    .scenario .row{display:flex;gap:11px;margin-top:12px}
+    .scenario .box{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(0,0,0,.22)}
+    .scenario .box .l{font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+    .scenario .box .b{font-size:17px;font-weight:800;margin-top:4px;color:var(--green)}
+    .scenario .box .s{font-size:10px;color:var(--muted);margin-top:2px}
+    .struct{margin-top:12px}
+    .struct .l{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+    .seg{display:flex;height:8px;border-radius:6px;overflow:hidden;margin-top:7px}
+    .seg .a{background:var(--green)} .seg .b{background:var(--violet)}
+    .seg-leg{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:6px}
+
+    /* generic sections */
+    section.block{padding:54px 0;border-top:1px solid var(--line)}
+    .h2{font-size:clamp(23px,2.7vw,33px);font-weight:800;letter-spacing:-.4px}
+    .h2 span{color:var(--green)}
+    .lead{color:var(--muted);margin-top:12px;max-width:700px}
+
+    /* how it works */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+    .step{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:22px}
+    .step .n{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#03130a;background:linear-gradient(135deg,var(--green),var(--cyan));margin-bottom:13px}
+    .step h4{font-size:16.5px;font-weight:800}
+    .step p{color:var(--muted);font-size:14px;margin-top:8px}
+
+    /* privacy */
+    .privacy{background:radial-gradient(700px 300px at 20% 0%,rgba(40,208,127,.12),transparent 70%);border:1px solid var(--line);border-radius:18px;padding:30px;margin-top:8px}
+    .privacy h3{font-size:21px;font-weight:800}.privacy p{color:var(--muted);margin-top:10px;max-width:780px}
+    .privacy code{background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:13px}
+
+    /* info cards */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:20px}
+    .card .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:rgba(63,208,230,.12);margin-bottom:13px}
+    .card .ic svg{width:21px;height:21px;stroke:var(--cyan)}
+    .card.warn .ic{background:rgba(244,195,74,.12)}.card.warn .ic svg{stroke:var(--amber)}
+    .card h4{font-size:16px;font-weight:800}.card p{color:var(--muted);font-size:14px;margin-top:8px}
+
+    .disclaimer{margin-top:30px;border:1px solid rgba(244,195,74,.4);background:rgba(244,195,74,.07);border-radius:14px;padding:20px 22px}
+    .disclaimer strong{color:var(--amber)}.disclaimer p{color:#e7d9b4;font-size:14.5px;margin-top:8px}
+
+    footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
+    footer a{color:var(--cyan);text-decoration:none}
+
+    .overlay{position:fixed;inset:0;background:rgba(4,8,20,.74);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+    .overlay.open{display:flex}
+    .modal{width:100%;max-width:460px;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:26px;position:relative}
+    .modal h3{font-size:21px;font-weight:800}
+    .modal .x{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+    .file{display:flex;align-items:center;gap:12px;margin-top:18px;padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2)}
+    .file .fi{width:38px;height:38px;border-radius:9px;background:rgba(40,208,127,.14);display:grid;place-items:center}
+    .file .fi svg{width:20px;height:20px;stroke:var(--green)}
+    .file .meta b{font-size:14px}.file .meta span{display:block;font-size:12.5px;color:var(--muted)}
+    .dl-action{margin-top:16px;width:100%;justify-content:center}
+    .modal .req{font-size:12.5px;color:var(--muted);margin-top:13px;text-align:center}
+
+    @media(max-width:900px){.hero{grid-template-columns:1fr;gap:32px}.cards,.steps{grid-template-columns:1fr}.app{order:2}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="topbar">
+      <div class="logo"><span class="mark">₽</span> Symulator Podatków CIT i VAT</div>
+      <span class="badge-free">Za darmo · open source (MIT)</span>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Aplikacja desktopowa dla biur architektonicznych · PKD 71.11.Z</span>
+        <h1>CIT i VAT pod kontrolą —
+          <span>zanim zapytasz księgową.</span>
+        </h1>
+        <p class="subhead"><b>Importujesz faktury lub wpisujesz dane</b> — a aplikacja sama wylicza CIT i VAT (miesięcznie i narastająco), symuluje zamknięcie roku i daje <b>prognozę AI</b>. Wszystko lokalnie, na Twoim komputerze.</p>
+
+        <div class="chips">
+          <span class="chip"><i></i>Import z Excela</span>
+          <span class="chip"><i></i>Liczy CIT i VAT automatycznie</span>
+          <span class="chip"><i></i>Prognoza i scenariusze AI</span>
+          <span class="chip"><i></i>Dane na Twoim dysku</span>
+          <span class="chip"><i></i>Bez admina i Node.js</span>
+        </div>
+
+        <div class="cta">
+          <div class="btn-row">
+            <a class="btn" id="downloadButton" href="#" role="button" aria-haspopup="dialog" aria-controls="downloadModal">
+              <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+              <span>Pobierz za darmo<small>Windows 10 / 11 · wersja 1.0.0 · ~98 MB</small></span>
+            </a>
+            <a class="btn-ghost" href="https://finanse-rose.vercel.app" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>
+              Demo online ↗
+            </a>
+          </div>
+          <p class="dl-count" id="downloadStats">Pobrań: —</p>
+        </div>
+      </div>
+
+      <!-- APP PREVIEW: KPI + AI scenario -->
+      <div class="app" aria-label="Podgląd aplikacji — pulpit i symulacja AI">
+        <div class="app-top"><i></i><i></i><i></i><span class="t">Symulator Podatkowy · Pulpit (maj 2026)</span></div>
+        <div class="app-body">
+          <div class="kpis">
+            <div class="kpi v">
+              <div class="lab">Wynik finansowy (M-C)</div>
+              <div class="val">32 480,00 zł</div>
+              <div class="sub">Rentowność netto · 79,2%</div>
+              <div class="bar"><i style="width:79%"></i></div>
+            </div>
+            <div class="kpi">
+              <span class="tag">CIT 9%</span>
+              <div class="lab">Należny CIT do US</div>
+              <div class="val">3 220,00 zł</div>
+              <div class="sub">Zaliczka za bieżący m-c</div>
+            </div>
+            <div class="kpi">
+              <div class="lab">Miesięczny VAT (JPK-V7)</div>
+              <div class="val red">8 268,50 zł</div>
+              <div class="sub">Zobowiązanie podatkowe</div>
+            </div>
+            <div class="kpi">
+              <div class="lab">Przychód netto spółki</div>
+              <div class="val">41 000,00 zł</div>
+              <div class="sub">Zafakturowano w tym m-cu</div>
+            </div>
+          </div>
+
+          <div class="scenario">
+            <span class="pill">✦ Scenariusz AI: zamknięcie roku</span>
+            <h4>Gdyby rok podatkowy 2026 zakończył się dzisiaj…</h4>
+            <div class="row">
+              <div class="box">
+                <div class="l">Zysk po podatkach</div>
+                <div class="b">30 478,00 zł</div>
+                <div class="s">Realna rentowność 14,9%</div>
+              </div>
+              <div class="box">
+                <div class="l">Status krajowy CIT</div>
+                <div class="b">+2 675,00 zł</div>
+                <div class="s">Zwrot nadpłaty w CIT-8</div>
+              </div>
+            </div>
+            <div class="struct">
+              <div class="l">Struktura przychodów YTD (161 000 zł)</div>
+              <div class="seg"><span class="a" style="width:40%"></span><span class="b" style="width:60%"></span></div>
+              <div class="seg-leg"><span>● Cykliczne 40% (65 000 zł)</span><span>● Skokowe 60% (96 000 zł)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JAK TO DZIAŁA -->
+    <section class="block">
+      <h2 class="h2">Importujesz dane — <span>resztę liczy aplikacja</span></h2>
+      <p class="lead">Trzy kroki od surowych faktur do gotowej symulacji podatkowej i prognozy. Bez arkuszy, bez ręcznych wzorów.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <h4>Importuj lub wpisz</h4>
+          <p>Wczytaj sprzedaż i koszty z <strong>pliku Excel</strong> albo dodaj transakcje ręcznie. Możesz też wpisać planowane przychody i wydatki na resztę roku.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <h4>Liczy CIT i VAT</h4>
+          <p>Aplikacja automatycznie wylicza <strong>zaliczkę CIT</strong> (9% / 19%), <strong>VAT JPK-V7</strong>, rentowność i koszty KUP — <strong>miesięcznie i narastająco (YTD)</strong>.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <h4>Symuluje i prognozuje (AI)</h4>
+          <p>Scenariusz „gdyby rok zakończył się dziś", bilans zamknięcia roku (McKinsey Waterfall), analiza struktury przychodów i <strong>wnioski płynnościowe</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRYWATNOŚĆ -->
+    <section class="block">
+      <h2 class="h2">Twoje dane <span>nie trafiają do nas. Nigdy.</span></h2>
+      <div class="privacy">
+        <h3>Lokalnie, prywatnie, bez kont</h3>
+        <p>Aplikacja działa w całości na Twoim komputerze. Transakcje i ustawienia zapisywane są wyłącznie lokalnie w pliku <code>~/.symulator_podatkow/baza_danych.json</code>. Brak kont, logowania, telemetrii i śledzenia. Dane opuszczają komputer <strong>tylko</strong>, jeśli świadomie włączysz chmurowego dostawcę AI (Gemini / OpenAI / Anthropic) — przy AI lokalnym (Ollama / LM Studio) nie wychodzą wcale.</p>
+      </div>
+    </section>
+
+    <!-- CO WARTO WIEDZIEĆ -->
+    <section class="block">
+      <h2 class="h2">Co warto wiedzieć <span>przed pobraniem</span></h2>
+      <p class="lead">Szczerze i bez gwiazdek — żeby nic Cię po instalacji nie zaskoczyło.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h4>Twoje dane zostają u Ciebie</h4>
+          <p>Zapis lokalny do <strong>.symulator_podatkow</strong>, zero telemetrii, brak kont. Plik bazy możesz skopiować jako własną kopię zapasową.</p>
+        </div>
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 0 0 18M3 12h18"/></svg></div>
+          <h4>AI: lokalnie albo w chmurze</h4>
+          <p>Lokalnie przez <strong>Ollama / LM Studio</strong> (dane nie wychodzą) lub w chmurze przez <strong>Gemini / OpenAI / Anthropic</strong>. Bez klucza działa wbudowany algorytm lokalny.</p>
+        </div>
+        <div class="card warn">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+          <h4>To narzędzie, nie doradca</h4>
+          <p>Analizy i prognozy AI mają charakter pomocniczy i <strong>nie są poradą podatkową ani prawną</strong>. Nie zastępują doradcy podatkowego ani biura rachunkowego — zweryfikuj decyzję u specjalisty.</p>
+        </div>
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg></div>
+          <h4>Bez Node.js i bez admina</h4>
+          <p>Samodzielny instalator <strong>.exe</strong> — zawiera wszystko, czego potrzebuje. Instaluje się per-użytkownik, bez uprawnień administratora.</p>
+        </div>
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <h4>Wymagania systemowe</h4>
+          <p><strong>Windows 10 / 11 (64-bit)</strong>, ok. 300–600 MB miejsca, wolny port lokalny 3000. Internet tylko dla chmurowego AI.</p>
+        </div>
+        <div class="card warn">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+          <h4>Niepodpisany plik (SmartScreen)</h4>
+          <p>Windows może pokazać <strong>„Nieznany wydawca”</strong>. Kliknij <strong>Więcej informacji → Uruchom mimo to</strong>. To normalne dla darmowego, niepodpisanego oprogramowania.</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>⚠️ Zastrzeżenie podatkowe</strong>
+        <p>Symulator Podatków CIT i VAT jest narzędziem pomocniczym i edukacyjnym. Generowane kalkulacje, symulacje i prognozy AI (zaliczki CIT, VAT JPK-V7, scenariusze zamknięcia roku, kwalifikacja kosztów jako KUP) <strong>nie stanowią porady podatkowej, prawnej ani księgowej</strong> i nie zastępują konsultacji z licencjonowanym doradcą podatkowym lub biurem rachunkowym. Treści AI mogą być niedokładne lub nieaktualne — przed każdą decyzją podatkową zweryfikuj je u specjalisty. Korzystasz z aplikacji na własną odpowiedzialność.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap"><p>&copy; 2026 Mariusz Świergula &bull; <a href="mailto:mariusz.swiergula@gmail.com">mariusz.swiergula@gmail.com</a> &bull; Licencja MIT</p></div>
+  </footer>
+
+  <!-- DOWNLOAD MODAL -->
+  <div class="overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="dlTitle">
+    <div class="modal">
+      <button class="x" id="dlClose" aria-label="Zamknij">&times;</button>
+      <h3 id="dlTitle">Pobierz Symulator Podatkowy</h3>
+      <div class="file">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></div>
+        <div class="meta"><b>Symulator Podatkow CIT i VAT Setup 1.0.0.exe</b><span>Instalator Windows · ~98 MB · v1.0.0</span></div>
+      </div>
+      <a class="btn dl-action" id="dlActionBtn" href="#" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+        <span>Pobierz instalator (.exe)</span>
+      </a>
+      <p class="req">Windows 10 / 11 (64-bit) · bez uprawnień administratora · SmartScreen → „Uruchom mimo to”</p>
+      <p class="dl-count" id="dlStats" style="text-align:center;margin-top:8px">Pobrań: —</p>
+    </div>
+  </div>
+
+  <script>
+    const REPO = "powtarzasie/symulator-podatkow-landing";
+    const TAG  = "v1.0.0";
+    const FALLBACK_URL = `https://github.com/${REPO}/releases/download/${TAG}/Symulator.Podatkow.CIT.i.VAT.Setup.1.0.0.exe`;
+
+    const overlay=document.getElementById("downloadModal"),openBtn=document.getElementById("downloadButton"),
+      closeBtn=document.getElementById("dlClose"),action=document.getElementById("dlActionBtn");
+    action.href=FALLBACK_URL;
+    const open=e=>{if(e)e.preventDefault();overlay.classList.add("open")};
+    const close=()=>overlay.classList.remove("open");
+    openBtn.addEventListener("click",open);
+    closeBtn.addEventListener("click",close);
+    overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+
+    const fmt=n=>new Intl.NumberFormat("pl-PL").format(n);
+    function setCount(n){const t=(n==null)?"Pobrań: —":`Pobrań: ${fmt(n)}`;
+      document.getElementById("downloadStats").textContent=t;document.getElementById("dlStats").textContent=t;}
+
+    fetch(`https://api.github.com/repos/${REPO}/releases/tags/${TAG}`)
+      .then(r=>r.ok?r.json():Promise.reject())
+      .then(rel=>{const a=(rel.assets||[]).find(x=>/\.exe$/i.test(x.name));
+        if(a){action.href=a.browser_download_url;setCount(a.download_count);}})
+      .catch(()=>{});
+  </script>
+</body>
+</html>
