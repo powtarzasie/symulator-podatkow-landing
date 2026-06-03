@@ -4,129 +4,500 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Symulator CIT i VAT dla architektów — importuj dane, licz automatycznie</title>
-  <meta name="description" content="Desktopowy symulator CIT i VAT dla biur architektonicznych (PKD 71.11.Z). Importujesz faktury lub wpisujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, za darmo." />
+  <title>Symulator CIT i VAT dla architektów – zanim zapytasz księgową</title>
+  <meta name="description" content="Desktopowy symulator CIT i VAT dla biur architektonicznych. Importujesz faktury, liczysz CIT i VAT, a AI robi precheck kosztów przed rozmową z księgową. Lokalnie, prywatnie, za darmo." />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pl_PL" />
   <meta property="og:url" content="https://powtarzasie.github.io/symulator-podatkow-landing/" />
-  <meta property="og:title" content="Symulator CIT i VAT dla architektów — desktop" />
-  <meta property="og:description" content="Importujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, prywatnie, za darmo." />
+  <meta property="og:title" content="Symulator CIT i VAT – AI przed księgową" />
+  <meta property="og:description" content="Sprawdź koszt, VAT i ryzyko podatkowe zanim napiszesz do księgowej. Lokalnie, prywatnie, za darmo." />
   <meta property="og:image" content="https://powtarzasie.github.io/symulator-podatkow-landing/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Symulator CIT i VAT dla architektów — desktop" />
+  <meta property="og:image:alt" content="Symulator CIT i VAT dla architektów" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Symulator CIT i VAT dla architektów — desktop" />
-  <meta name="twitter:description" content="Importujesz dane, a aplikacja liczy CIT, VAT i prognozę AI. Lokalnie, za darmo." />
+  <meta name="twitter:title" content="Symulator CIT i VAT – AI przed księgową" />
+  <meta name="twitter:description" content="AI robi precheck kosztów, VAT i ryzyka podatkowego przed rozmową z księgową." />
   <meta name="twitter:image" content="https://powtarzasie.github.io/symulator-podatkow-landing/og-image.jpg" />
 
   <style>
     :root{
-      --bg:#0a1124; --bg2:#0e1834; --panel:#121f3f; --panel2:#16264d; --ink:#eaf0ff; --muted:#9fb0d6;
-      --line:rgba(255,255,255,.08); --green:#28d07f; --green-d:#16a45f; --cyan:#3fd0e6;
-      --violet:#7c6bff; --violet2:#5b48e0; --amber:#f4c34a; --red:#ff6b6b; --shadow:0 24px 60px rgba(0,0,0,.45);
+      --bg:#070d1d;
+      --bg2:#0d1732;
+      --panel:#111d3c;
+      --panel2:#16264d;
+      --ink:#f0f5ff;
+      --muted:#a7b6d8;
+      --soft:#7f8eb5;
+      --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.16);
+      --green:#28d07f;
+      --green2:#58f29b;
+      --green-d:#15a864;
+      --cyan:#3fd0e6;
+      --blue:#4b82ff;
+      --violet:#7c6bff;
+      --violet2:#5b48e0;
+      --amber:#f4c34a;
+      --red:#ff6b6b;
+      --shadow:0 28px 80px rgba(0,0,0,.52);
+      --glow:0 0 34px rgba(124,107,255,.38);
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);
-      background:radial-gradient(1200px 700px at 80% -10%,#1b2a63 0%,transparent 60%),
-        radial-gradient(900px 600px at -10% 20%,#10224a 0%,transparent 55%),
-        linear-gradient(180deg,var(--bg),var(--bg2));min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased}
-    .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+    body{
+      font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 520px at 84% 20%,rgba(91,72,224,.24) 0%,transparent 58%),
+        radial-gradient(680px 460px at 0% 28%,rgba(63,208,230,.12) 0%,transparent 55%),
+        radial-gradient(780px 500px at 65% 88%,rgba(40,208,127,.10) 0%,transparent 62%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      min-height:100vh;
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
     a{color:inherit}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
     .mono{font-family:'Consolas','SF Mono',ui-monospace,monospace}
 
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
-    .logo{display:flex;align-items:center;gap:11px;font-weight:800}
-    .logo .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:grid;place-items:center;color:#fff;font-weight:900}
-    .badge-free{font-size:13px;color:var(--green);border:1px solid rgba(40,208,127,.35);padding:6px 12px;border-radius:999px;background:rgba(40,208,127,.08)}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:22px 0;
+      position:relative;
+      z-index:2;
+    }
+    .logo{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:.1px}
+    .mark{
+      width:36px;height:36px;border-radius:10px;
+      background:linear-gradient(135deg,var(--violet),var(--cyan));
+      display:grid;place-items:center;color:#fff;font-weight:900;
+      box-shadow:0 12px 34px rgba(63,208,230,.22);
+    }
+    .badge-free{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:13px;color:var(--green2);
+      border:1px solid rgba(40,208,127,.34);
+      padding:7px 13px;border-radius:999px;
+      background:rgba(40,208,127,.08);
+      white-space:nowrap;
+    }
+    .badge-free svg{width:15px;height:15px;stroke:var(--green2)}
 
-    .hero{display:grid;grid-template-columns:1fr 1.05fr;gap:42px;align-items:center;padding:30px 0 56px}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border:1px solid var(--line);padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.03);margin-bottom:18px}
-    h1{font-size:clamp(29px,4.2vw,50px);line-height:1.08;letter-spacing:-.5px;font-weight:800}
-    h1 span{display:block;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .subhead{color:var(--muted);font-size:clamp(15.5px,1.5vw,18px);margin-top:18px;max-width:540px}
+    .hero{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(430px,.88fr);
+      gap:52px;
+      align-items:center;
+      padding:46px 0 62px;
+      min-height:680px;
+    }
+    .hero-copy{position:relative;z-index:2}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;
+      font-size:14px;color:#c7d4f4;
+      border:1px solid var(--line);
+      padding:9px 15px;border-radius:999px;
+      background:rgba(255,255,255,.035);
+      margin-bottom:28px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .eyebrow svg{width:17px;height:17px;stroke:var(--cyan)}
+
+    h1{
+      font-size:clamp(42px,6.1vw,76px);
+      line-height:1.04;
+      letter-spacing:-2.4px;
+      font-weight:900;
+      max-width:690px;
+      text-wrap:balance;
+    }
+    h1 span{
+      display:block;
+      background:linear-gradient(90deg,var(--green2),var(--green),var(--cyan));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      filter:drop-shadow(0 10px 30px rgba(40,208,127,.10));
+    }
+    .subhead{
+      color:#c4cce1;
+      font-size:clamp(17px,1.55vw,20px);
+      margin-top:24px;
+      max-width:650px;
+    }
     .subhead b{color:var(--ink)}
-    .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
-    .chip{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;border:1px solid var(--line);padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.04)}
-    .chip i{width:7px;height:7px;border-radius:50%;background:var(--green)}
-    .cta{margin-top:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-    .btn{cursor:pointer;border:none;font-family:inherit;display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--green),var(--green-d));color:#03130a;font-weight:800;padding:17px 30px;border-radius:14px;font-size:18px;box-shadow:0 14px 34px rgba(40,208,127,.32);transition:transform .15s,box-shadow .15s;text-decoration:none}
-    .btn:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(40,208,127,.42)}
-    .btn svg{width:24px;height:24px;stroke:#03130a}
-    .btn small{display:block;font-weight:600;font-size:12.5px;opacity:.8}
-    .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
-    .btn-ghost{cursor:pointer;display:inline-flex;align-items:center;gap:14px;text-decoration:none;font-weight:800;font-size:18px;color:#dff7fb;border:2px solid rgba(63,208,230,.6);background:rgba(63,208,230,.12);padding:15px 28px;border-radius:14px;transition:background .15s,transform .15s,border-color .15s}
-    .btn-ghost:hover{background:rgba(63,208,230,.22);border-color:var(--cyan);transform:translateY(-2px)}
-    .btn-ghost svg{width:24px;height:24px;stroke:var(--cyan)}
-    .btn-ghost small{display:block;font-weight:600;font-size:12.5px;opacity:.85;color:#bfe9f2}
+
+    .chips{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px 12px;
+      margin-top:30px;
+      max-width:600px;
+    }
+    .chip{
+      display:flex;align-items:center;gap:9px;
+      font-size:14px;color:#d6def2;
+      border:1px solid var(--line);
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.036);
+      backdrop-filter:blur(10px);
+    }
+    .chip i{
+      width:16px;height:16px;border-radius:50%;
+      display:grid;place-items:center;
+      background:rgba(40,208,127,.15);
+      border:1px solid rgba(40,208,127,.32);
+      flex:0 0 auto;
+    }
+    .chip i::before{content:'✓';font-size:10px;color:var(--green2);font-weight:900;line-height:1}
+
+    .cta{margin-top:34px;display:flex;flex-direction:column;gap:13px;align-items:flex-start}
+    .btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch}
+    .btn{
+      cursor:pointer;border:none;font-family:inherit;
+      display:inline-flex;align-items:center;gap:14px;
+      background:linear-gradient(135deg,var(--green2),var(--green-d));
+      color:#03130a;font-weight:900;
+      padding:18px 32px;border-radius:15px;
+      font-size:18px;
+      box-shadow:0 18px 44px rgba(40,208,127,.31);
+      transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+      text-decoration:none;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 22px 52px rgba(40,208,127,.43);filter:saturate(1.08)}
+    .btn svg{width:24px;height:24px;stroke:#03130a;flex:0 0 auto}
+    .btn small{display:block;font-weight:650;font-size:12.5px;opacity:.82;letter-spacing:.1px}
+    .btn-ghost{
+      cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+      text-decoration:none;font-weight:850;font-size:18px;
+      color:#e6fbff;
+      border:1px solid rgba(63,208,230,.55);
+      background:rgba(63,208,230,.08);
+      padding:17px 28px;border-radius:15px;
+      transition:background .16s ease,transform .16s ease,border-color .16s ease;
+    }
+    .btn-ghost:hover{background:rgba(63,208,230,.16);border-color:var(--cyan);transform:translateY(-2px)}
+    .btn-ghost svg{width:24px;height:24px;stroke:var(--cyan);flex:0 0 auto}
+    .btn-ghost small{display:block;font-weight:650;font-size:12.5px;opacity:.85;color:#bfe9f2}
     .dl-count{font-size:13px;color:var(--muted)}
+    .privacy-line{
+      margin-top:8px;
+      display:flex;align-items:center;gap:9px;
+      color:#94a4c8;
+      font-size:14px;
+    }
+    .privacy-line svg{width:18px;height:18px;stroke:#87a0cd}
 
-    /* ---- APP MOCKUP (right) ---- */
-    .app{background:linear-gradient(180deg,#0c1733,#0a1430);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
-    .app-top{display:flex;align-items:center;gap:8px;padding:11px 15px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.25)}
-    .app-top i{width:11px;height:11px;border-radius:50%;background:#33405f}
-    .app-top .t{margin-left:8px;font-size:12.5px;color:var(--muted)}
-    .app-body{padding:15px}
-    .kpis{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-    .kpi{border:1px solid var(--line);border-radius:12px;padding:13px;background:rgba(255,255,255,.02)}
-    .kpi.v{background:linear-gradient(140deg,var(--violet2),#3a2db0);border-color:transparent}
-    .kpi .lab{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
-    .kpi.v .lab{color:#d7d2ff}
-    .kpi .val{font-size:20px;font-weight:800;margin-top:7px}
-    .kpi .sub{font-size:11px;color:var(--muted);margin-top:4px}
-    .kpi.v .sub{color:#cfc8ff}
-    .kpi .tag{float:right;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(40,208,127,.18);color:var(--green)}
-    .kpi .val.red{color:var(--red)}
-    .bar{height:5px;border-radius:5px;background:rgba(255,255,255,.12);margin-top:9px;overflow:hidden}
-    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--cyan))}
+    /* prawa sekcja – mały animowany ekran */
+    .hero-visual{
+      position:relative;
+      justify-self:end;
+      width:min(100%,535px);
+      min-height:420px;
+      display:grid;
+      place-items:center;
+    }
+    .hero-visual::before{
+      content:'';
+      position:absolute;
+      width:580px;height:580px;
+      border-radius:50%;
+      background:
+        repeating-radial-gradient(circle,rgba(124,107,255,.15) 0 1px,transparent 1px 15px);
+      opacity:.38;
+      right:-132px;top:-82px;
+      mask-image:radial-gradient(circle,black 0%,transparent 70%);
+      animation:slowSpin 18s linear infinite;
+    }
+    .hero-visual::after{
+      content:'';
+      position:absolute;
+      width:240px;height:240px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(63,208,230,.18),transparent 66%);
+      left:-52px;bottom:8px;
+      filter:blur(8px);
+      animation:breathe 5s ease-in-out infinite;
+    }
 
-    /* AI scenario card inside app */
-    .scenario{margin-top:12px;border:1px solid var(--line);border-radius:13px;padding:14px;background:linear-gradient(160deg,#0a1026,#0c1430)}
-    .scenario .pill{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.4px;color:#cfc8ff;background:rgba(124,107,255,.18);border:1px solid rgba(124,107,255,.35);padding:4px 10px;border-radius:999px}
-    .scenario h4{font-size:15px;font-weight:800;margin-top:10px}
-    .scenario .row{display:flex;gap:11px;margin-top:12px}
-    .scenario .box{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(0,0,0,.22)}
-    .scenario .box .l{font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
-    .scenario .box .b{font-size:17px;font-weight:800;margin-top:4px;color:var(--green)}
-    .scenario .box .s{font-size:10px;color:var(--muted);margin-top:2px}
-    .struct{margin-top:12px}
-    .struct .l{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
-    .seg{display:flex;height:8px;border-radius:6px;overflow:hidden;margin-top:7px}
-    .seg .a{background:var(--green)} .seg .b{background:var(--violet)}
-    .seg-leg{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:6px}
+    .tax-screen{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:525px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:24px;
+      padding:10px;
+      background:linear-gradient(180deg,rgba(20,32,69,.92),rgba(8,14,32,.94));
+      box-shadow:var(--shadow),0 0 70px rgba(124,107,255,.22);
+      animation:floaty 7s ease-in-out infinite;
+      overflow:hidden;
+    }
+    .tax-screen::before{
+      content:'';
+      position:absolute;inset:-1px;
+      border-radius:24px;
+      background:linear-gradient(115deg,transparent 0%,rgba(63,208,230,.32) 18%,transparent 38%,rgba(124,107,255,.30) 66%,transparent 100%);
+      opacity:.7;
+      pointer-events:none;
+      mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      padding:1px;
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+    }
+    .screen-top{
+      height:34px;
+      display:flex;align-items:center;gap:8px;
+      padding:0 10px;
+      color:#8291b8;
+      font-size:12px;
+    }
+    .screen-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+    .screen-dot.red{background:#ff645f}.screen-dot.yellow{background:#f6c34a}.screen-dot.green{background:#31d583}
+    .screen-card{
+      position:relative;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      padding:20px 16px 18px;
+      background:linear-gradient(180deg,rgba(4,10,26,.88),rgba(3,8,22,.96));
+      overflow:hidden;
+    }
+    .screen-card::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(110deg,transparent 0%,rgba(255,255,255,.08) 42%,transparent 60%);
+      transform:translateX(-120%);
+      animation:shine 5.5s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .precheck-head{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    .precheck-title{
+      display:flex;align-items:center;gap:10px;
+      font-weight:850;
+      letter-spacing:.1px;
+    }
+    .spark{
+      width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;
+      background:rgba(124,107,255,.14);
+      box-shadow:0 0 30px rgba(124,107,255,.25);
+      color:#c5bbff;
+      animation:pulseGlow 2.4s ease-in-out infinite;
+    }
+    .online{
+      display:inline-flex;align-items:center;gap:7px;
+      font-size:12px;font-weight:800;color:var(--green2);
+      background:rgba(40,208,127,.09);
+      border:1px solid rgba(40,208,127,.20);
+      padding:6px 10px;border-radius:999px;
+      white-space:nowrap;
+    }
+    .online i{width:8px;height:8px;border-radius:50%;background:var(--green2);box-shadow:0 0 12px rgba(88,242,155,.8);animation:dotPulse 1.6s infinite}
 
-    /* generic sections */
-    section.block{padding:54px 0;border-top:1px solid var(--line)}
-    .h2{font-size:clamp(23px,2.7vw,33px);font-weight:800;letter-spacing:-.4px}
-    .h2 span{color:var(--green)}
-    .lead{color:var(--muted);margin-top:12px;max-width:700px}
+    .question-box{
+      display:flex;align-items:center;gap:12px;
+      border:1px solid rgba(124,107,255,.36);
+      border-radius:14px;
+      padding:12px 12px;
+      min-height:76px;
+      background:linear-gradient(90deg,rgba(124,107,255,.08),rgba(63,208,230,.045));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02),0 0 28px rgba(124,107,255,.12);
+    }
+    .user-icon{
+      width:38px;height:38px;border-radius:13px;
+      display:grid;place-items:center;
+      color:#a899ff;
+      background:rgba(124,107,255,.10);
+      flex:0 0 auto;
+    }
+    .typed-line{
+      flex:1;
+      font-size:15.5px;
+      color:#f5f7ff;
+      min-height:46px;
+      display:flex;
+      align-items:center;
+    }
+    .cursor{
+      display:inline-block;
+      width:2px;height:18px;
+      margin-left:4px;
+      background:var(--ink);
+      animation:blink .85s steps(1,end) infinite;
+      vertical-align:-3px;
+    }
+    .send-btn{
+      width:46px;height:46px;border-radius:13px;
+      display:grid;place-items:center;
+      border:0;
+      background:linear-gradient(135deg,var(--violet),var(--violet2));
+      box-shadow:0 0 30px rgba(124,107,255,.58);
+      color:#fff;
+      flex:0 0 auto;
+      animation:sendPulse 2s ease-in-out infinite;
+    }
+    .send-btn svg{width:21px;height:21px;stroke:currentColor}
 
-    /* how it works */
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
-    .step{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:22px}
-    .step .n{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#03130a;background:linear-gradient(135deg,var(--green),var(--cyan));margin-bottom:13px}
-    .step h4{font-size:16.5px;font-weight:800}
-    .step p{color:var(--muted);font-size:14px;margin-top:8px}
+    .analysis-row{
+      margin-top:17px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      font-weight:850;color:var(--cyan);
+      font-size:16px;
+    }
+    .dots{display:inline-flex;gap:6px;margin-left:8px;vertical-align:middle}
+    .dots i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:dotJump 1.15s infinite ease-in-out}
+    .dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.30s}
+    .time{font-size:12px;color:#9badcf;font-weight:800}
 
-    /* privacy */
-    .privacy{background:radial-gradient(700px 300px at 20% 0%,rgba(40,208,127,.12),transparent 70%);border:1px solid var(--line);border-radius:18px;padding:30px;margin-top:8px}
-    .privacy h3{font-size:21px;font-weight:800}.privacy p{color:var(--muted);margin-top:10px;max-width:780px}
-    .privacy code{background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:13px}
+    .scanbar{
+      position:relative;
+      height:4px;
+      margin-top:12px;
+      border-radius:999px;
+      background:rgba(63,208,230,.16);
+      overflow:hidden;
+    }
+    .scanbar i{
+      position:absolute;inset:0;
+      width:45%;
+      background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent);
+      filter:drop-shadow(0 0 8px var(--cyan));
+      animation:scan 2.2s ease-in-out infinite;
+    }
 
-    /* info cards */
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
-    .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:20px}
-    .card .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:rgba(63,208,230,.12);margin-bottom:13px}
-    .card .ic svg{width:21px;height:21px;stroke:var(--cyan)}
+    .mini-result{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:16px;
+    }
+    .result-card{
+      min-height:95px;
+      border-radius:13px;
+      border:1px solid var(--line2);
+      padding:12px 11px;
+      background:rgba(255,255,255,.025);
+      transform:translateY(0);
+      animation:cardBreath 4.5s ease-in-out infinite;
+    }
+    .result-card:nth-child(2){animation-delay:.35s}.result-card:nth-child(3){animation-delay:.7s}
+    .result-card.good{border-color:rgba(40,208,127,.30);background:rgba(40,208,127,.055)}
+    .result-card.info{border-color:rgba(63,208,230,.30);background:rgba(63,208,230,.045)}
+    .result-card.warn{border-color:rgba(244,195,74,.34);background:rgba(244,195,74,.045)}
+    .result-label{font-size:11px;color:#c7d4f4;text-transform:uppercase;letter-spacing:.6px;font-weight:900}
+    .result-value{font-size:14.5px;font-weight:900;margin-top:7px;line-height:1.18}
+    .good .result-value{color:var(--green2)}.info .result-value{color:#67dbff}.warn .result-value{color:var(--amber)}
+    .result-desc{font-size:11.5px;color:#adbad8;margin-top:8px;line-height:1.35}
+
+    .flow{
+      display:flex;align-items:center;justify-content:center;gap:9px;
+      margin-top:16px;
+      color:#cbd5ef;
+    }
+    .flow-pill{
+      min-width:96px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:10px 12px;
+      background:rgba(255,255,255,.04);
+      font-weight:800;
+      font-size:14px;
+    }
+    .flow-pill.ai{
+      color:#d5ccff;
+      border-color:rgba(124,107,255,.55);
+      background:rgba(124,107,255,.18);
+      box-shadow:0 0 26px rgba(124,107,255,.32);
+      animation:pulseAi 2.2s ease-in-out infinite;
+    }
+    .arrow{color:#7281aa;font-weight:900}
+    .ai-note{
+      margin-top:14px;
+      display:flex;gap:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:14px;
+      color:#aebce0;
+      font-size:12.5px;
+    }
+    .ai-note b{color:#dbe5ff}
+    .ai-note svg{width:18px;height:18px;stroke:var(--violet);flex:0 0 auto;margin-top:1px}
+
+    /* sekcje */
+    section.block{padding:58px 0;border-top:1px solid var(--line)}
+    .h2{font-size:clamp(26px,3vw,38px);font-weight:900;letter-spacing:-.8px;line-height:1.12}
+    .h2 span{color:var(--green2)}
+    .lead{color:var(--muted);margin-top:13px;max-width:760px;font-size:16px}
+
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+    .step{
+      background:linear-gradient(180deg,rgba(18,31,63,.86),rgba(15,27,58,.88));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.16);
+    }
+    .step .n{
+      width:38px;height:38px;border-radius:12px;
+      display:grid;place-items:center;
+      font-weight:900;color:#03130a;
+      background:linear-gradient(135deg,var(--green2),var(--cyan));
+      margin-bottom:15px;
+    }
+    .step h4{font-size:17px;font-weight:900}.step p{color:var(--muted);font-size:14.5px;margin-top:9px}
+
+    .privacy{
+      background:radial-gradient(700px 320px at 20% 0%,rgba(40,208,127,.13),transparent 70%),linear-gradient(180deg,rgba(18,31,63,.82),rgba(14,26,55,.88));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:32px;
+      margin-top:10px;
+    }
+    .privacy h3{font-size:22px;font-weight:900}.privacy p{color:var(--muted);margin-top:10px;max-width:860px}
+    .privacy code{background:rgba(255,255,255,.07);padding:2px 7px;border-radius:6px;font-size:13px;color:#d8e6ff}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+    .card{
+      background:linear-gradient(180deg,rgba(18,31,63,.86),rgba(15,27,58,.88));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:22px;
+    }
+    .card .ic{
+      width:42px;height:42px;border-radius:13px;
+      display:grid;place-items:center;
+      background:rgba(63,208,230,.12);
+      margin-bottom:14px;
+    }
+    .card .ic svg{width:22px;height:22px;stroke:var(--cyan)}
     .card.warn .ic{background:rgba(244,195,74,.12)}.card.warn .ic svg{stroke:var(--amber)}
-    .card h4{font-size:16px;font-weight:800}.card p{color:var(--muted);font-size:14px;margin-top:8px}
+    .card h4{font-size:16.5px;font-weight:900}.card p{color:var(--muted);font-size:14.3px;margin-top:8px}
 
-    .disclaimer{margin-top:30px;border:1px solid rgba(244,195,74,.4);background:rgba(244,195,74,.07);border-radius:14px;padding:20px 22px}
+    .disclaimer{
+      margin-top:30px;
+      border:1px solid rgba(244,195,74,.34);
+      background:rgba(244,195,74,.065);
+      border-radius:17px;
+      padding:20px 22px;
+    }
     .disclaimer strong{color:var(--amber)}.disclaimer p{color:#e7d9b4;font-size:14.5px;margin-top:8px}
 
     footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center}
@@ -135,194 +506,242 @@
     .overlay{position:fixed;inset:0;background:rgba(4,8,20,.74);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
     .overlay.open{display:flex}
     .modal{width:100%;max-width:460px;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:26px;position:relative}
-    .modal h3{font-size:21px;font-weight:800}
+    .modal h3{font-size:21px;font-weight:900}
     .modal .x{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
     .file{display:flex;align-items:center;gap:12px;margin-top:18px;padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.2)}
-    .file .fi{width:38px;height:38px;border-radius:9px;background:rgba(40,208,127,.14);display:grid;place-items:center}
-    .file .fi svg{width:20px;height:20px;stroke:var(--green)}
+    .file .fi{width:38px;height:38px;border-radius:9px;background:rgba(40,208,127,.14);display:grid;place-items:center;flex:0 0 auto}
+    .file .fi svg{width:20px;height:20px;stroke:var(--green2)}
     .file .meta b{font-size:14px}.file .meta span{display:block;font-size:12.5px;color:var(--muted)}
     .dl-action{margin-top:16px;width:100%;justify-content:center}
     .modal .req{font-size:12.5px;color:var(--muted);margin-top:13px;text-align:center}
 
-    @media(max-width:900px){.hero{grid-template-columns:1fr;gap:32px}.cards,.steps{grid-template-columns:1fr}.app{order:2}}
+    @keyframes blink{50%{opacity:0}}
+    @keyframes dotJump{0%,80%,100%{transform:translateY(0);opacity:.45}40%{transform:translateY(-4px);opacity:1}}
+    @keyframes scan{0%{transform:translateX(-100%)}50%{transform:translateX(120%)}100%{transform:translateX(260%)}}
+    @keyframes sendPulse{0%,100%{transform:scale(1);box-shadow:0 0 24px rgba(124,107,255,.50)}50%{transform:scale(1.05);box-shadow:0 0 42px rgba(124,107,255,.82)}}
+    @keyframes pulseGlow{0%,100%{box-shadow:0 0 18px rgba(124,107,255,.20)}50%{box-shadow:0 0 34px rgba(124,107,255,.55)}}
+    @keyframes dotPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.45);opacity:1}}
+    @keyframes pulseAi{0%,100%{box-shadow:0 0 18px rgba(124,107,255,.22)}50%{box-shadow:0 0 34px rgba(124,107,255,.48)}}
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes breathe{0%,100%{opacity:.42;transform:scale(1)}50%{opacity:.72;transform:scale(1.08)}}
+    @keyframes slowSpin{to{transform:rotate(360deg)}}
+    @keyframes shine{0%,54%{transform:translateX(-125%)}72%,100%{transform:translateX(125%)}}
+    @keyframes cardBreath{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;gap:34px;min-height:auto;padding-top:24px}
+      .hero-visual{justify-self:center;width:min(100%,560px);min-height:auto}
+      .chips{grid-template-columns:1fr 1fr}
+      h1{font-size:clamp(40px,9vw,64px)}
+    }
+    @media(max-width:720px){
+      .wrap{padding:0 16px}
+      .topbar{align-items:flex-start}.badge-free{font-size:12px;white-space:normal;justify-content:flex-end;text-align:right}
+      .chips,.steps,.cards{grid-template-columns:1fr}
+      .mini-result{grid-template-columns:1fr}
+      .flow{flex-wrap:wrap}.arrow{display:none}.flow-pill{min-width:130px}
+      .btn,.btn-ghost{width:100%;justify-content:center}.btn-row{width:100%}
+      .tax-screen{border-radius:20px}.screen-card{padding:18px 14px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-
     <header class="topbar">
-      <div class="logo"><span class="mark">₽</span> Symulator Podatków CIT i VAT</div>
-      <span class="badge-free">Za darmo · open source (MIT)</span>
+      <div class="logo"><span class="mark">P</span> Symulator Podatków CIT i VAT</div>
+      <span class="badge-free" aria-label="Bezpieczne i prywatne">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+        100% offline · Bezpieczne · Prywatne
+      </span>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div>
-        <span class="eyebrow">Aplikacja desktopowa dla biur architektonicznych · PKD 71.11.Z</span>
-        <h1>CIT i VAT pod kontrolą —
-          <span>zanim zapytasz księgową.</span>
-        </h1>
-        <p class="subhead"><b>Importujesz faktury lub wpisujesz dane</b> — a aplikacja sama wylicza CIT i VAT (miesięcznie i narastająco), symuluje zamknięcie roku i daje <b>prognozę AI</b>. Wszystko lokalnie, na Twoim komputerze.</p>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Aplikacja desktopowa dla biur architektonicznych
+          </span>
 
-        <div class="chips">
-          <span class="chip"><i></i>Import z Excela</span>
-          <span class="chip"><i></i>Liczy CIT i VAT automatycznie</span>
-          <span class="chip"><i></i>Prognoza i scenariusze AI</span>
-          <span class="chip"><i></i>Dane na Twoim dysku</span>
-          <span class="chip"><i></i>Bez admina i Node.js</span>
-        </div>
+          <h1>CIT i VAT pod kontrolą — <span>zanim zapytasz księgową.</span></h1>
 
-        <div class="cta">
-          <div class="btn-row">
-            <a class="btn" id="downloadButton" href="#" role="button" aria-haspopup="dialog" aria-controls="downloadModal">
-              <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
-              <span>Pobierz za darmo<small>Windows 10 / 11 · wersja 1.0.0 · ~98 MB</small></span>
-            </a>
-            <a class="btn-ghost" href="https://finanse-rose.vercel.app" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>
-              <span>Demo online ↗<small>Wypróbuj w przeglądarce</small></span>
-            </a>
-          </div>
-          <p class="dl-count" id="downloadStats">Pobrań: —</p>
-        </div>
-      </div>
+          <p class="subhead">
+            AI analizuje Twoje wydatki i daje gotową odpowiedź dot. kosztów, VAT i ryzyka podatkowego. Przychodzisz do księgowej z <b>gotową analizą</b>, nie z chaotycznym pytaniem.
+          </p>
 
-      <!-- APP PREVIEW: KPI + AI scenario -->
-      <div class="app" aria-label="Podgląd aplikacji — pulpit i symulacja AI">
-        <div class="app-top"><i></i><i></i><i></i><span class="t">Symulator Podatkowy · Pulpit (maj 2026)</span></div>
-        <div class="app-body">
-          <div class="kpis">
-            <div class="kpi v">
-              <div class="lab">Wynik finansowy (M-C)</div>
-              <div class="val">32 480,00 zł</div>
-              <div class="sub">Rentowność netto · 79,2%</div>
-              <div class="bar"><i style="width:79%"></i></div>
-            </div>
-            <div class="kpi">
-              <span class="tag">CIT 9%</span>
-              <div class="lab">Należny CIT do US</div>
-              <div class="val">3 220,00 zł</div>
-              <div class="sub">Zaliczka za bieżący m-c</div>
-            </div>
-            <div class="kpi">
-              <div class="lab">Miesięczny VAT (JPK-V7)</div>
-              <div class="val red">8 268,50 zł</div>
-              <div class="sub">Zobowiązanie podatkowe</div>
-            </div>
-            <div class="kpi">
-              <div class="lab">Przychód netto spółki</div>
-              <div class="val">41 000,00 zł</div>
-              <div class="sub">Zafakturowano w tym m-cu</div>
-            </div>
+          <div class="chips" aria-label="Najważniejsze korzyści">
+            <span class="chip"><i></i>AI zanim zapytasz księgową</span>
+            <span class="chip"><i></i>Szybka analiza w 15 sekund</span>
+            <span class="chip"><i></i>Propozycja opisu do faktury</span>
+            <span class="chip"><i></i>Ocena ryzyka podatkowego</span>
+            <span class="chip"><i></i>Dane tylko na Twoim dysku</span>
+            <span class="chip"><i></i>Bez logowania i bez chmury</span>
           </div>
 
-          <div class="scenario">
-            <span class="pill">✦ Scenariusz AI: zamknięcie roku</span>
-            <h4>Gdyby rok podatkowy 2026 zakończył się dzisiaj…</h4>
-            <div class="row">
-              <div class="box">
-                <div class="l">Zysk po podatkach</div>
-                <div class="b">30 478,00 zł</div>
-                <div class="s">Realna rentowność 14,9%</div>
+          <div class="cta">
+            <div class="btn-row">
+              <a class="btn" id="downloadButton" href="#" role="button" aria-haspopup="dialog" aria-controls="downloadModal">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+                <span>Pobierz za darmo<small>Windows 10 / 11 · wersja 1.0.0 · ~98 MB</small></span>
+              </a>
+              <a class="btn-ghost" href="https://finanse-rose.vercel.app" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>
+                <span>Demo online ↗<small>Wypróbuj w przeglądarce</small></span>
+              </a>
+            </div>
+            <p class="dl-count" id="downloadStats">Pobrań: —</p>
+            <p class="privacy-line">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+              Dane nigdy nie opuszczają Twojego komputera.
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Animowany podgląd działania AI przed księgową">
+          <div class="tax-screen">
+            <div class="screen-top" aria-hidden="true">
+              <span class="screen-dot red"></span><span class="screen-dot yellow"></span><span class="screen-dot green"></span>
+            </div>
+
+            <div class="screen-card">
+              <div class="precheck-head">
+                <div class="precheck-title"><span class="spark">✦</span> Precheck podatkowy AI</div>
+                <span class="online"><i></i>AI online</span>
               </div>
-              <div class="box">
-                <div class="l">Status krajowy CIT</div>
-                <div class="b">+2 675,00 zł</div>
-                <div class="s">Zwrot nadpłaty w CIT-8</div>
+
+              <div class="question-box">
+                <div class="user-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="typed-line"><span id="typedText">Lunch z inwestorem przy projekcie — czy mogę to wrzucić w koszty?</span><span class="cursor" aria-hidden="true"></span></div>
+                <button class="send-btn" aria-label="Wyślij pytanie do AI" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                </button>
               </div>
-            </div>
-            <div class="struct">
-              <div class="l">Struktura przychodów YTD (161 000 zł)</div>
-              <div class="seg"><span class="a" style="width:40%"></span><span class="b" style="width:60%"></span></div>
-              <div class="seg-leg"><span>● Cykliczne 40% (65 000 zł)</span><span>● Skokowe 60% (96 000 zł)</span></div>
+
+              <div class="analysis-row">
+                <span>AI analizuje <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></span>
+                <span class="time">15 sek.</span>
+              </div>
+              <div class="scanbar" aria-hidden="true"><i></i></div>
+
+              <div class="mini-result" aria-label="Wynik prechecku AI">
+                <div class="result-card good">
+                  <div class="result-label">KUP</div>
+                  <div class="result-value" id="kupResult">Warunkowo</div>
+                  <div class="result-desc" id="kupDesc">Spisz cel spotkania i związek z przychodem.</div>
+                </div>
+                <div class="result-card info">
+                  <div class="result-label">VAT</div>
+                  <div class="result-value" id="vatResult">Do weryfikacji</div>
+                  <div class="result-desc" id="vatDesc">Brak jednoznacznej podstawy do odliczenia.</div>
+                </div>
+                <div class="result-card warn">
+                  <div class="result-label">Ryzyko</div>
+                  <div class="result-value" id="riskResult">Średnie</div>
+                  <div class="result-desc" id="riskDesc">Uzasadnione biznesowo, ale wymaga opisu.</div>
+                </div>
+              </div>
+
+              <div class="flow" aria-label="Proces pracy">
+                <span class="flow-pill">Ty</span>
+                <span class="arrow">→</span>
+                <span class="flow-pill ai">AI</span>
+                <span class="arrow">→</span>
+                <span class="flow-pill">Księgowa</span>
+              </div>
+
+              <div class="ai-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><path d="M18 6 6 18M6 6l12 12"/></svg>
+                <p><b>AI nie zastępuje księgowej.</b> Pomaga zadać lepsze pytanie i przygotować opis kosztu.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- JAK TO DZIAŁA -->
-    <section class="block">
-      <h2 class="h2">Importujesz dane — <span>resztę liczy aplikacja</span></h2>
-      <p class="lead">Trzy kroki od surowych faktur do gotowej symulacji podatkowej i prognozy. Bez arkuszy, bez ręcznych wzorów.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="n">1</div>
-          <h4>Importuj lub wpisz</h4>
-          <p>Wczytaj sprzedaż i koszty z <strong>pliku Excel</strong> albo dodaj transakcje ręcznie. Możesz też wpisać planowane przychody i wydatki na resztę roku.</p>
+      <section class="block">
+        <h2 class="h2">Importujesz dane — <span>resztę liczy aplikacja</span></h2>
+        <p class="lead">Trzy kroki od surowych faktur do gotowej symulacji podatkowej, prechecku kosztów i prognozy. Bez ręcznych arkuszy, bez zgadywania, bez rozmów na ślepo.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="n">1</div>
+            <h4>Importuj lub wpisz</h4>
+            <p>Wczytaj sprzedaż i koszty z pliku Excel albo dodaj transakcje ręcznie. Możesz też wpisać planowane przychody i wydatki na resztę roku.</p>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <h4>Liczy CIT i VAT</h4>
+            <p>Aplikacja automatycznie wylicza zaliczkę CIT, VAT JPK-V7, rentowność i koszty KUP — miesięcznie oraz narastająco.</p>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <h4>Robi precheck AI</h4>
+            <p>Wpisujesz wątpliwy wydatek prostym językiem, a AI podpowiada ryzyko, VAT, KUP i opis do rozmowy z księgową.</p>
+          </div>
         </div>
-        <div class="step">
-          <div class="n">2</div>
-          <h4>Liczy CIT i VAT</h4>
-          <p>Aplikacja automatycznie wylicza <strong>zaliczkę CIT</strong> (9% / 19%), <strong>VAT JPK-V7</strong>, rentowność i koszty KUP — <strong>miesięcznie i narastająco (YTD)</strong>.</p>
-        </div>
-        <div class="step">
-          <div class="n">3</div>
-          <h4>Symuluje i prognozuje (AI)</h4>
-          <p>Scenariusz „gdyby rok zakończył się dziś", bilans zamknięcia roku (McKinsey Waterfall), analiza struktury przychodów i <strong>wnioski płynnościowe</strong>.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- PRYWATNOŚĆ -->
-    <section class="block">
-      <h2 class="h2">Twoje dane <span>nie trafiają do nas. Nigdy.</span></h2>
-      <div class="privacy">
-        <h3>Lokalnie, prywatnie, bez kont</h3>
-        <p>Aplikacja działa w całości na Twoim komputerze. Transakcje i ustawienia zapisywane są wyłącznie lokalnie w pliku <code>~/.symulator_podatkow/baza_danych.json</code>. Brak kont, logowania, telemetrii i śledzenia. Dane opuszczają komputer <strong>tylko</strong>, jeśli świadomie włączysz chmurowego dostawcę AI (Gemini / OpenAI / Anthropic) — przy AI lokalnym (Ollama / LM Studio) nie wychodzą wcale.</p>
-      </div>
-    </section>
+      <section class="block">
+        <h2 class="h2">Twoje dane <span>nie trafiają do nas. Nigdy.</span></h2>
+        <div class="privacy">
+          <h3>Lokalnie, prywatnie, bez kont</h3>
+          <p>Aplikacja działa w całości na Twoim komputerze. Transakcje i ustawienia zapisywane są lokalnie w pliku <code>~/.symulator_podatkow/baza_danych.json</code>. Brak kont, logowania, telemetrii i śledzenia. Dane opuszczają komputer tylko wtedy, gdy świadomie włączysz chmurowego dostawcę AI. Przy AI lokalnym nie wychodzą wcale.</p>
+        </div>
+      </section>
 
-    <!-- CO WARTO WIEDZIEĆ -->
-    <section class="block">
-      <h2 class="h2">Co warto wiedzieć <span>przed pobraniem</span></h2>
-      <p class="lead">Szczerze i bez gwiazdek — żeby nic Cię po instalacji nie zaskoczyło.</p>
-      <div class="cards">
-        <div class="card">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <h4>Twoje dane zostają u Ciebie</h4>
-          <p>Zapis lokalny do <strong>.symulator_podatkow</strong>, zero telemetrii, brak kont. Plik bazy możesz skopiować jako własną kopię zapasową.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 0 0 18M3 12h18"/></svg></div>
-          <h4>AI: lokalnie albo w chmurze</h4>
-          <p>Lokalnie przez <strong>Ollama / LM Studio</strong> (dane nie wychodzą) lub w chmurze przez <strong>Gemini / OpenAI / Anthropic</strong>. Bez klucza działa wbudowany algorytm lokalny.</p>
-        </div>
-        <div class="card warn">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
-          <h4>To narzędzie, nie doradca</h4>
-          <p>Analizy i prognozy AI mają charakter pomocniczy i <strong>nie są poradą podatkową ani prawną</strong>. Nie zastępują doradcy podatkowego ani biura rachunkowego — zweryfikuj decyzję u specjalisty.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg></div>
-          <h4>Bez Node.js i bez admina</h4>
-          <p>Samodzielny instalator <strong>.exe</strong> — zawiera wszystko, czego potrzebuje. Instaluje się per-użytkownik, bez uprawnień administratora.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-          <h4>Wymagania systemowe</h4>
-          <p><strong>Windows 10 / 11 (64-bit)</strong>, ok. 300–600 MB miejsca, wolny port lokalny 3000. Internet tylko dla chmurowego AI.</p>
-        </div>
-        <div class="card warn">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
-          <h4>Niepodpisany plik (SmartScreen)</h4>
-          <p>Windows może pokazać <strong>„Nieznany wydawca”</strong>. Kliknij <strong>Więcej informacji → Uruchom mimo to</strong>. To normalne dla darmowego, niepodpisanego oprogramowania.</p>
-        </div>
-      </div>
+      <section class="block">
+        <h2 class="h2">Co warto wiedzieć <span>przed pobraniem</span></h2>
+        <p class="lead">Krótko i konkretnie — żeby po instalacji nie było niespodzianek.</p>
 
-      <div class="disclaimer">
-        <strong>⚠️ Zastrzeżenie podatkowe</strong>
-        <p>Symulator Podatków CIT i VAT jest narzędziem pomocniczym i edukacyjnym. Generowane kalkulacje, symulacje i prognozy AI (zaliczki CIT, VAT JPK-V7, scenariusze zamknięcia roku, kwalifikacja kosztów jako KUP) <strong>nie stanowią porady podatkowej, prawnej ani księgowej</strong> i nie zastępują konsultacji z licencjonowanym doradcą podatkowym lub biurem rachunkowym. Treści AI mogą być niedokładne lub nieaktualne — przed każdą decyzją podatkową zweryfikuj je u specjalisty. Korzystasz z aplikacji na własną odpowiedzialność.</p>
-      </div>
-    </section>
+        <div class="cards">
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <h4>Dane zostają u Ciebie</h4>
+            <p>Zapis lokalny do folderu aplikacji, zero telemetrii i brak konta. Plik bazy możesz skopiować jako własną kopię zapasową.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 0 0 18M3 12h18"/></svg></div>
+            <h4>AI lokalnie albo w chmurze</h4>
+            <p>Możesz używać lokalnego AI lub dostawców chmurowych. Bez konfiguracji aplikacja nadal działa jako lokalny symulator podatkowy.</p>
+          </div>
+          <div class="card warn">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+            <h4>To narzędzie, nie doradca</h4>
+            <p>Analizy AI są pomocnicze. Nie są poradą podatkową, prawną ani księgową i nie zastępują specjalisty.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg></div>
+            <h4>Bez Node.js i bez admina</h4>
+            <p>Samodzielny instalator EXE zawiera wszystko, czego potrzebuje. Instaluje się per użytkownik, bez uprawnień administratora.</p>
+          </div>
+          <div class="card">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <h4>Wymagania systemowe</h4>
+            <p>Windows 10 / 11, ok. 300–600 MB miejsca, wolny port lokalny 3000. Internet potrzebny tylko dla chmurowego AI.</p>
+          </div>
+          <div class="card warn">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+            <h4>SmartScreen może ostrzec</h4>
+            <p>Windows może pokazać komunikat „Nieznany wydawca”. To typowe dla darmowego, niepodpisanego instalatora.</p>
+          </div>
+        </div>
 
+        <div class="disclaimer">
+          <strong>⚠️ Zastrzeżenie podatkowe</strong>
+          <p>Symulator Podatków CIT i VAT jest narzędziem pomocniczym i edukacyjnym. Generowane kalkulacje, symulacje i prognozy AI nie stanowią porady podatkowej, prawnej ani księgowej. Przed każdą istotną decyzją podatkową zweryfikuj wynik u specjalisty.</p>
+        </div>
+      </section>
+    </main>
   </div>
 
   <footer>
-    <div class="wrap"><p>&copy; 2026 Mariusz Świergula &bull; <a href="mailto:mariusz.swiergula@gmail.com">mariusz.swiergula@gmail.com</a> &bull; Licencja MIT</p></div>
+    <div class="wrap"><p>&copy; 2026 Mariusz Świerguła &bull; <a href="mailto:mariusz.swiergula@gmail.com">mariusz.swiergula@gmail.com</a> &bull; Licencja MIT</p></div>
   </footer>
 
-  <!-- DOWNLOAD MODAL -->
   <div class="overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="dlTitle">
     <div class="modal">
       <button class="x" id="dlClose" aria-label="Zamknij">&times;</button>
@@ -333,37 +752,115 @@
       </div>
       <a class="btn dl-action" id="dlActionBtn" href="#" download>
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
-        <span>Pobierz instalator (.exe)</span>
+        <span>Pobierz instalator EXE</span>
       </a>
-      <p class="req">Windows 10 / 11 (64-bit) · bez uprawnień administratora · SmartScreen → „Uruchom mimo to”</p>
+      <p class="req">Windows 10 / 11 · bez uprawnień administratora · SmartScreen → „Uruchom mimo to”</p>
       <p class="dl-count" id="dlStats" style="text-align:center;margin-top:8px">Pobrań: —</p>
     </div>
   </div>
 
   <script>
-    const REPO = "powtarzasie/symulator-podatkow-landing";
-    const TAG  = "v1.0.0";
+    const examples = [
+      {
+        q: 'Lunch z inwestorem przy projekcie — czy mogę to wrzucić w koszty?',
+        kup: 'Warunkowo', kupDesc: 'Spisz cel spotkania i związek z przychodem.',
+        vat: 'Do weryfikacji', vatDesc: 'Brak jednoznacznej podstawy do odliczenia.',
+        risk: 'Średnie', riskDesc: 'Uzasadnione biznesowo, ale wymaga opisu.'
+      },
+      {
+        q: 'Kupiłem monitor do pracy w CAD — jak opisać fakturę?',
+        kup: 'Tak', kupDesc: 'Sprzęt bezpośrednio wspiera pracę projektową.',
+        vat: 'Możliwy', vatDesc: 'Przy użyciu firmowym zwykle do odliczenia.',
+        risk: 'Niskie', riskDesc: 'Zadbaj o firmowy opis i dokument zakupu.'
+      },
+      {
+        q: 'Garnitur na spotkanie z klientem — czy to koszt firmowy?',
+        kup: 'Raczej nie', kupDesc: 'Ryzyko uznania za wydatek osobisty.',
+        vat: 'Nie', vatDesc: 'Brak bezpiecznej podstawy do odliczenia.',
+        risk: 'Wysokie', riskDesc: 'Warto zapytać księgową przed ujęciem.'
+      }
+    ];
+
+    const typedText = document.getElementById('typedText');
+    const kupResult = document.getElementById('kupResult');
+    const kupDesc = document.getElementById('kupDesc');
+    const vatResult = document.getElementById('vatResult');
+    const vatDesc = document.getElementById('vatDesc');
+    const riskResult = document.getElementById('riskResult');
+    const riskDesc = document.getElementById('riskDesc');
+
+    let exampleIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function updateResult(item){
+      kupResult.textContent = item.kup;
+      kupDesc.textContent = item.kupDesc;
+      vatResult.textContent = item.vat;
+      vatDesc.textContent = item.vatDesc;
+      riskResult.textContent = item.risk;
+      riskDesc.textContent = item.riskDesc;
+    }
+
+    function typeLoop(){
+      const item = examples[exampleIndex];
+      const full = item.q;
+
+      if(!deleting){
+        charIndex += 1;
+        typedText.textContent = full.slice(0,charIndex);
+        if(charIndex === full.length){
+          updateResult(item);
+          deleting = true;
+          setTimeout(typeLoop, 1900);
+          return;
+        }
+      }else{
+        charIndex -= 1;
+        typedText.textContent = full.slice(0,charIndex);
+        if(charIndex === 0){
+          deleting = false;
+          exampleIndex = (exampleIndex + 1) % examples.length;
+        }
+      }
+      setTimeout(typeLoop, deleting ? 20 : 34);
+    }
+
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      setTimeout(typeLoop, 800);
+    }
+
+    const REPO = 'powtarzasie/symulator-podatkow-landing';
+    const TAG  = 'v1.0.0';
     const FALLBACK_URL = `https://github.com/${REPO}/releases/download/${TAG}/Symulator.Podatkow.CIT.i.VAT.Setup.1.0.0.exe`;
 
-    const overlay=document.getElementById("downloadModal"),openBtn=document.getElementById("downloadButton"),
-      closeBtn=document.getElementById("dlClose"),action=document.getElementById("dlActionBtn");
-    action.href=FALLBACK_URL;
-    const open=e=>{if(e)e.preventDefault();overlay.classList.add("open")};
-    const close=()=>overlay.classList.remove("open");
-    openBtn.addEventListener("click",open);
-    closeBtn.addEventListener("click",close);
-    overlay.addEventListener("click",e=>{if(e.target===overlay)close()});
-    document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+    const overlay = document.getElementById('downloadModal');
+    const openBtn = document.getElementById('downloadButton');
+    const closeBtn = document.getElementById('dlClose');
+    const action = document.getElementById('dlActionBtn');
+    action.href = FALLBACK_URL;
 
-    const fmt=n=>new Intl.NumberFormat("pl-PL").format(n);
-    function setCount(n){const t=(n==null)?"Pobrań: —":`Pobrań: ${fmt(n)}`;
-      document.getElementById("downloadStats").textContent=t;document.getElementById("dlStats").textContent=t;}
+    const open = e => { if(e) e.preventDefault(); overlay.classList.add('open'); };
+    const close = () => overlay.classList.remove('open');
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => { if(e.target === overlay) close(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+
+    const fmt = n => new Intl.NumberFormat('pl-PL').format(n);
+    function setCount(n){
+      const text = (n == null) ? 'Pobrań: —' : `Pobrań: ${fmt(n)}`;
+      document.getElementById('downloadStats').textContent = text;
+      document.getElementById('dlStats').textContent = text;
+    }
 
     fetch(`https://api.github.com/repos/${REPO}/releases/tags/${TAG}`)
-      .then(r=>r.ok?r.json():Promise.reject())
-      .then(rel=>{const a=(rel.assets||[]).find(x=>/\.exe$/i.test(x.name));
-        if(a){action.href=a.browser_download_url;setCount(a.download_count);}})
-      .catch(()=>{});
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(rel => {
+        const asset = (rel.assets || []).find(x => /\.exe$/i.test(x.name));
+        if(asset){ action.href = asset.browser_download_url; setCount(asset.download_count); }
+      })
+      .catch(() => {});
   </script>
 </body>
 </html>
